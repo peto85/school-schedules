@@ -3,21 +3,30 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use GuzzleHttp\Client;
 
 class JobsController extends Controller {
-  /**
-  * @Route("/jobs")
-  */
-  public function indexAction() {
-    $client = new Client([
-      // Base URI is used with relative requests
-      'base_uri' => 'https://staging.tempbuddy.com/public/api/',
-    ]);
 
-    $jobs = $client->get('jobs');
-    return JsonResponse::fromJsonString($jobs->getBody());
+  /**
+  * @Route("/job")
+  * @Method({"GET"})
+  */
+  public function indexAction(Request $request) {
+
+    // retrieve the job manager service
+    $jobManager = $this->container->get('app.job_manager');
+
+    if ($request->query->has('uuid')) {
+      // extract uuid
+      $uuid = $request->query->get('uuid');
+      $job = $jobManager->getJob($uuid);
+    } else {
+      $job = $jobManager->getRandomJob();
+    }
+
+    return JsonResponse::fromJsonString($job);
   }
 }
