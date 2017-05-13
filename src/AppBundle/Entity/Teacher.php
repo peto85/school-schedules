@@ -45,4 +45,138 @@ class Teacher {
      * )
   **/
   private $oneTimeUnavailabilities;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->recurrentAvailabilities = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->oneTimeUnavailabilities = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Teacher
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set category
+     *
+     * @param string $category
+     *
+     * @return Teacher
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return string
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Add recurrentAvailability
+     *
+     * @param \AppBundle\Entity\RecurrentAvailability $recurrentAvailability
+     *
+     * @return Teacher
+     */
+    public function addRecurrentAvailability(\AppBundle\Entity\RecurrentAvailability $recurrentAvailability)
+    {
+        $this->recurrentAvailabilities[] = $recurrentAvailability;
+
+        return $this;
+    }
+
+    /**
+     * Remove recurrentAvailability
+     *
+     * @param \AppBundle\Entity\RecurrentAvailability $recurrentAvailability
+     */
+    public function removeRecurrentAvailability(\AppBundle\Entity\RecurrentAvailability $recurrentAvailability)
+    {
+        $this->recurrentAvailabilities->removeElement($recurrentAvailability);
+    }
+
+    /**
+     * Get recurrentAvailabilities
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRecurrentAvailabilities()
+    {
+        return $this->recurrentAvailabilities;
+    }
+
+    /**
+     * Add oneTimeUnavailability
+     *
+     * @param \AppBundle\Entity\OneTimeUnavailability $oneTimeUnavailability
+     *
+     * @return Teacher
+     */
+    public function addOneTimeUnavailability(\AppBundle\Entity\OneTimeUnavailability $oneTimeUnavailability)
+    {
+        $this->oneTimeUnavailabilities[] = $oneTimeUnavailability;
+
+        return $this;
+    }
+
+    /**
+     * Remove oneTimeUnavailability
+     *
+     * @param \AppBundle\Entity\OneTimeUnavailability $oneTimeUnavailability
+     */
+    public function removeOneTimeUnavailability(\AppBundle\Entity\OneTimeUnavailability $oneTimeUnavailability)
+    {
+        $this->oneTimeUnavailabilities->removeElement($oneTimeUnavailability);
+    }
+
+    /**
+     * Get oneTimeUnavailabilities
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOneTimeUnavailabilities()
+    {
+        return $this->oneTimeUnavailabilities;
+    }
 }
