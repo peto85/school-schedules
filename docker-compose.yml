@@ -1,14 +1,27 @@
 nginx:
   build: docker/nginx
+  volumes:
+    - ./:/app
   ports:
     - "8080:80"
   links:
     - php
-  volumes:
-    - ./:/app
+
 
 php:
   image: php:7.0-fpm
   volumes:
     - ./:/app
+  links:
+    - db
   working_dir: /app
+
+db:
+   image: mysql/mysql-server:5.7
+   ports:
+     - "3306:3306"
+   environment:
+      MYSQL_DATABASE: schoolschedules
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
