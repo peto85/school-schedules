@@ -10,3 +10,6 @@ services:
     app.teacher_manager:
         class: AppBundle\Service\TeacherManager
         arguments: ['@doctrine.orm.entity_manager']
+    app.availability_manager:
+        class: AppBundle\Service\AvailabilityManager
+        arguments: ['@doctrine.orm.entity_manager']

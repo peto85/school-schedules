@@ -15,12 +15,20 @@ class JobManager {
     ]);
   }
 
+  public function getJob($uuid = null) {
+    if ($uuid == null) {
+      return $this->getRandomJob();
+    } else {
+      return $this->getJobWithId($uuid);
+    }
+  }
+
   public function getRandomJob() {
     $job = $this->client->get('jobs');
     return ($job->getBody());
   }
 
-  public function getJob($uuid) {
+  public function getJobWithId($uuid) {
     $job = $this->client->get("jobs?uuid={$uuid}");
     return ($job->getBody());
   }

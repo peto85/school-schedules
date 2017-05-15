@@ -9,20 +9,22 @@ use AppBundle\Entity\Teacher;
 class TeacherManager {
 
   private $em;
+  private $repository;
+  private $serializer;
 
   public function __construct($em) {
     $this->em = $em;
+    $this->repository = $em->getRepository('AppBundle:Teacher');
   }
 
-  public function saveTeacher($name, $category) {
-    $teacher = new Teacher();
-    $teacher->setName($name);
-    $teacher->setCategory($category);
+  public function fetchTeacher($id) {
+    $teacher = $this->repository->find($id);
+    return $teacher;
+  }
 
-    // tells Doctrine you want to (eventually) save the Product (no queries yet)
+  public function saveTeacher($teacher) {
     $this->em->persist($teacher);
-
-    // actually executes the queries (i.e. the INSERT query)
     $this->em->flush();
   }
+
 }
