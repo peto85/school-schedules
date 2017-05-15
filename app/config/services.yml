@@ -7,3 +7,6 @@ services:
     app.job_manager:
         class: AppBundle\Service\JobManager
         arguments: ['%base_uri%']
+    app.teacher_manager:
+        class: AppBundle\Service\TeacherManager
+        arguments: ['@doctrine.orm.entity_manager']

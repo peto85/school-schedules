@@ -17,18 +17,22 @@ class TeacherController extends Controller {
   * @Method({"POST"})
   */
   public function indexAction(Request $request) {
-    $teacher = new Teacher();
-    $teacher->setName($this->request->get('name'));
-    $teacher->setCategory($this->request->get('category'));
+    $name = $request->request->get('name');
+    $category = $request->request->get('category');
 
-    $em = $this->getDoctrine()->getManager();
+    // retrieve the teacher manager service
+    $teacherManager = $this->container->get('app.teacher_manager');
 
-    // tells Doctrine you want to (eventually) save the Product (no queries yet)
-    $em->persist($teacher);
+    $teacherManager->saveTeacher($name, $category);
 
-    // actually executes the queries (i.e. the INSERT query)
-    $em->flush();
+    return JsonResponse::fromJsonString('{ \'result: success\' }');
+  }
 
-    return JsonResponse::fromJsonString('[ \'success\' ]');
+  /**
+  * @Route("/teacher-availability")
+  * @Method({"POST"})
+  */
+  public function availabilityAction(Request $request) {
+    return JsonResponse::fromJsonString('{ \'result: success\' }');
   }
 }
