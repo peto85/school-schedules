@@ -12,4 +12,6 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
     app.availability_manager:
         class: AppBundle\Service\AvailabilityManager
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager', '@app.date_helper']
+    app.date_helper:
+        class: AppBundle\Utils\DateHelper

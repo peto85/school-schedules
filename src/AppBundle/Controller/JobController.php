@@ -25,8 +25,8 @@ class JobController extends Controller {
     // retrieve uuid from query
     $uuid = $request->query->get('uuid');
     // retrieve the job
-    $job = $this->jobManager->getJob($uuid);
-
+    $job = $this->jobManager->fetchJob($uuid);
+    
     return JsonResponse::fromJsonString($job);
   }
 }

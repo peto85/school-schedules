@@ -15,7 +15,7 @@ class JobManager {
     ]);
   }
 
-  public function getJob($uuid = null) {
+  public function fetchJob($uuid = null) {
     if ($uuid == null) {
       return $this->getRandomJob();
     } else {

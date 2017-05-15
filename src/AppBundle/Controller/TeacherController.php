@@ -10,8 +10,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+
+use Doctrine\Common\Collections\ArrayCollection;
 
 use AppBundle\Entity\Teacher;
 use AppBundle\Entity\OneTimeUnavailability;
@@ -31,7 +33,7 @@ class TeacherController extends Controller {
 
     // Add a serializer
     $encoder = new JsonEncoder();
-    $normalizer = new GetSetMethodNormalizer();
+    $normalizer = new ObjectNormalizer();
     $normalizer->setCircularReferenceHandler(function ($obj) {
       return $obj->getName();
     });
@@ -101,5 +103,23 @@ class TeacherController extends Controller {
     $this->availabilityManager->addUnavailability($teacherId, $oneTimeUnavailability);
 
     return JsonResponse::fromJsonString('{ "result" : "success" }');
+  }
+
+
+  /**
+  * @Route("/available-teachers")
+  * @Method({"GET"})
+  */
+  public function matchesAction(Request $request) {
+    $jobId = $request->query->get('job_uuid');
+
+    // Retrieve some service we will use often
+    $jobManager = $this->container->get('app.job_manager');
+
+    $job = json_decode($jobManager->fetchJob($jobId));
+
+    $availableTeachers = $this->availabilityManager->findAvailableTeachers($job);
+
+    return $this->json($availableTeachers);
   }
 }
