@@ -3,6 +3,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use AppBundle\Entity\Teacher;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="recurrent_availability")
@@ -29,6 +31,12 @@ class RecurrentAvailability {
    * @ORM\Column(type="time")
    */
   private $end;
+
+  /**
+   * @ORM\ManyToOne(targetEntity="Teacher", inversedBy="recurrentAvailabilities")
+   * @ORM\JoinColumn(name="teacher_id", referencedColumnName="id")
+   */
+  private $teacher;
 
     /**
      * Get id
@@ -73,8 +81,8 @@ class RecurrentAvailability {
      */
     public function setStart($start)
     {
-        $this->start = $start;
-
+        $dateTime = \DateTime::createFromFormat("H:i:s", $start);
+        $this->start = $dateTime;
         return $this;
     }
 
@@ -97,9 +105,9 @@ class RecurrentAvailability {
      */
     public function setEnd($end)
     {
-        $this->end = $end;
-
-        return $this;
+      $dateTime = \DateTime::createFromFormat("H:i:s", $end);
+      $this->end = $dateTime;
+      return $this;
     }
 
     /**
@@ -110,5 +118,29 @@ class RecurrentAvailability {
     public function getEnd()
     {
         return $this->end;
+    }
+
+    /**
+     * Set teacher
+     *
+     * @param Teacher $teacher
+     *
+     * @return RecurrentAvailability
+     */
+    public function setTeacher(Teacher $teacher = null)
+    {
+        $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    /**
+     * Get teacher
+     *
+     * @return Teacher
+     */
+    public function getTeacher()
+    {
+        return $this->teacher;
     }
 }

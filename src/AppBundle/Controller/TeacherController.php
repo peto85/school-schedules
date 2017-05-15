@@ -9,18 +9,34 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+
 use AppBundle\Entity\Teacher;
+use AppBundle\Entity\OneTimeUnavailability;
+use AppBundle\Entity\RecurrentAvailability;
 
 class TeacherController extends Controller {
 
   private $teacherManager;
+  private $availabilityManager;
   private $serializer;
 
   public function setContainer(ContainerInterface $container = null) {
     parent::setContainer($container);
     // Retrieve some service we will use often
     $this->teacherManager = $this->container->get('app.teacher_manager');
-    $this->serializer = $this->container->get('serializer');
+    $this->availabilityManager = $this->container->get('app.availability_manager');
+
+    // Add a serializer
+    $encoder = new JsonEncoder();
+    $normalizer = new GetSetMethodNormalizer();
+    $normalizer->setCircularReferenceHandler(function ($obj) {
+      return $obj->getName();
+    });
+
+    $this->serializer = new Serializer([$normalizer], [$encoder]);
   }
 
   /**
@@ -57,6 +73,16 @@ class TeacherController extends Controller {
   * @Method({"POST"})
   */
   public function availabilityAction(Request $request) {
+
+    $jsonData = json_decode($request->getContent());
+
+    $teacherId = $jsonData->teacherId;
+    $availability = json_encode($jsonData->availability);
+
+    $recurrentAvailability = $this->serializer->deserialize($availability, RecurrentAvailability::class, 'json');
+
+    $this->availabilityManager->addAvailability($teacherId, $recurrentAvailability);
+
     return JsonResponse::fromJsonString('{ "result" : "success" }');
   }
 
@@ -65,6 +91,15 @@ class TeacherController extends Controller {
   * @Method({"POST"})
   */
   public function unavailabilityAction(Request $request) {
+    $jsonData = json_decode($request->getContent());
+
+    $teacherId = $jsonData->teacherId;
+    $unavailability = json_encode($jsonData->unavailability);
+
+    $oneTimeUnavailability = $this->serializer->deserialize($unavailability, OneTimeUnavailability::class, 'json');
+
+    $this->availabilityManager->addUnavailability($teacherId, $oneTimeUnavailability);
+
     return JsonResponse::fromJsonString('{ "result" : "success" }');
   }
 }

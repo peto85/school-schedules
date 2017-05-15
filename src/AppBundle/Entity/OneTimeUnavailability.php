@@ -3,6 +3,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use AppBundle\Entity\Teacher;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="one_time_unavailability")
@@ -25,6 +27,14 @@ class OneTimeUnavailability {
    */
   private $end;
 
+  /**
+   * @ORM\ManyToOne(targetEntity="Teacher", inversedBy="oneTimeUnavailabilities")
+   * @ORM\JoinColumn(name="teacher_id", referencedColumnName="id")
+   */
+  private $teacher;
+
+
+
     /**
      * Get id
      *
@@ -44,9 +54,9 @@ class OneTimeUnavailability {
      */
     public function setStart($start)
     {
-        $this->start = $start;
-
-        return $this;
+      $dateTime = \DateTime::createFromFormat('Y-m-d H:i:s', $start);
+      $this->start = $dateTime;
+      return $this;
     }
 
     /**
@@ -68,9 +78,9 @@ class OneTimeUnavailability {
      */
     public function setEnd($end)
     {
-        $this->end = $end;
-
-        return $this;
+      $dateTime = \DateTime::createFromFormat('Y-m-d H:i:s', $end);
+      $this->end = $dateTime;
+      return $this;
     }
 
     /**
@@ -81,5 +91,29 @@ class OneTimeUnavailability {
     public function getEnd()
     {
         return $this->end;
+    }
+
+    /**
+     * Set teacher
+     *
+     * @param \AppBundle\Entity\Teacher $teacher
+     *
+     * @return OneTimeUnavailability
+     */
+    public function setTeacher(\AppBundle\Entity\Teacher $teacher = null)
+    {
+        $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    /**
+     * Get teacher
+     *
+     * @return \AppBundle\Entity\Teacher
+     */
+    public function getTeacher()
+    {
+        return $this->teacher;
     }
 }

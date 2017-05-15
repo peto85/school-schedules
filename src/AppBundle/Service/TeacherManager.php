@@ -9,16 +9,16 @@ use AppBundle\Entity\Teacher;
 class TeacherManager {
 
   private $em;
-  private $repository;
+  private $teachers;
   private $serializer;
 
   public function __construct($em) {
     $this->em = $em;
-    $this->repository = $em->getRepository('AppBundle:Teacher');
+    $this->teachers = $em->getRepository('AppBundle:Teacher');
   }
 
   public function fetchTeacher($id) {
-    $teacher = $this->repository->find($id);
+    $teacher = $this->teachers->find($id);
     return $teacher;
   }
 
