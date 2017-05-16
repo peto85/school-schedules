@@ -17,9 +17,14 @@ Once you have downloaded the repo, you can run the docker environment using [doc
 $ docker-compose up -d
 ```
 
-If everything went well, you can now install the project dependencies by running [composer](https://getcomposer.org/) (which is already downloaded in the php docker container):
+You can now install the project dependencies by running [composer](https://getcomposer.org/) (which is already downloaded in the php docker container):
 ```
 $ docker-compose run php composer install
+```
+
+After dependencies are installed, the database schema needs to be created. Since entities are annotated with Doctrine annotations, we can leverage the symfony console for this:
+```
+$ docker-compose run php bin/console doctrine:schema:create
 ```
 
 Finally, you need to add an entry for the chosen domain name for this application in your [hosts](https://www.howtogeek.com/howto/27350/beginner-geek-how-to-edit-your-hosts-file/) file:
