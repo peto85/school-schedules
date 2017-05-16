@@ -38,6 +38,7 @@ class AvailabilityManager {
   }
 
   public function findAvailableTeachers($job) {
+    // printf("\n");
     // convenience
     $jobShifts = $job->shifts;
     $jobCategory = $job->category;
@@ -68,28 +69,28 @@ class AvailabilityManager {
       // printf("teacher is available for all the shifts\n");
       $availableTeachers[] = $teacher->getName();
     }
-
+    // printf("\n");
     return $availableTeachers;
   }
 
   // return true if teacher is available for the shift, based on his unavailabilities
-  private function checkUnavailabilities($shiftStart, $shiftEnd, $unavailabilities) {
+  public function checkUnavailabilities($shiftStart, $shiftEnd, $unavailabilities) {
     foreach ($unavailabilities as $unavailability) {
       $unavailabilityStart = $unavailability->getStart();
       $unavailabilityEnd = $unavailability->getEnd();
       // printf("\t\tchecking unavailability: [%s - %s]\n", $unavailabilityStart->format('Y-m-d H:i:s'), $unavailabilityEnd->format('Y-m-d H:i:s'));
 
       if ($this->dateHelper->checkDateOverlap($shiftStart,$shiftEnd, $unavailabilityStart, $unavailabilityEnd)) {
-        // printf("\t\t\tfound an unavailability for this teacher, skipping teacher");
+        // printf("\t\t\tfound an unavailability for this teacher, skipping teacher\n");
         return false;
       }
     }
-    // printf("\t\tall unavailabilities were good for this shift");
+    // printf("\t\tall unavailabilities were good for this shift\n");
     return true;
   }
 
   // return true if teacher is available for the shift, based on his availabilities
-  private function checkAvailabilities($shiftStart, $shiftEnd, $availabilities) {
+  public function checkAvailabilities($shiftStart, $shiftEnd, $availabilities) {
     $shiftWeekDay = $this->dateHelper->getWeekDay($shiftStart);
 
     foreach ($availabilities as $availability) {
@@ -104,11 +105,11 @@ class AvailabilityManager {
       }
 
       if ($this->dateHelper->checkAvailabilityForShift($shiftStart, $shiftEnd, $availabilityStartTime, $availabilityEndTime)) {
-        // printf("\t\t\tfound an availability for this shift");
+        // printf("\t\t\tfound an availability for this shift\n");
         return true;
       }
     }
-    // printf("\t\t\tdidn't find any availability for this shift");
+    // printf("\t\t\tdidn't find any availability for this shift\n");
     return false;
   }
 
