@@ -1,31 +1,37 @@
 SchoolSchedules
 ===============
 
-Please read these instructions to set up the environment. Also, there are comments and notes that are important to understand some of the decisions taken. Enjoy!
+Please read these instructions to run the exercise application. Also, there are some comments and thoughts that are important to understand some of the decisions made while working on this project.
 
-## Requirements
+Enjoy!
+
+# Requirements
 
 1. Docker
 2. PHP 7.0+ (if want to run the tests)
 
-## Installation
+# Installation
 
 Once you have downloaded the repo, you can run the docker environment using [docker-compose](https://docs.docker.com/compose/):
 ```
 $ docker-compose up -d
 ```
 
-If everything went smooth, you can now install the project dependencies using [composer](https://getcomposer.org/) (which is already downloaded in the php docker container):
+If everything went well, you can now install the project dependencies by running [composer](https://getcomposer.org/) (which is already downloaded in the php docker container):
 ```
 $ docker-compose run php composer install
 ```
+
 Finally, you need to add an entry for the chosen domain name for this application in your [hosts](https://www.howtogeek.com/howto/27350/beginner-geek-how-to-edit-your-hosts-file/) file:
 ```
 127.0.0.1 schoolschedules.dev
 ```
-## Usage
 
-These endpoints are available:
+*Note:* The IP address might need to be different depending on your docker installation. You might have to find the docker machine ip by using  `docker-machine ip <name of your machine>`.
+
+# Usage
+
+The following endpoints are available:
 
 ### GET /job
 Get a random job (or a specific job if a `uuid` parameter is provided)
@@ -44,7 +50,6 @@ Insert a teacher in the system. The POST content (raw) should be similar to this
 }
 ```
 [POST] http://schoolschedules.dev:8080/app_dev.php/teacher
-
 
 ### POST /teacher-availability
 Insert a teacher's recurrent availability time slot in the system. The POST content (raw) should be similar to this:
@@ -78,19 +83,22 @@ Returns a list of available teacher names for a random job (or a specific job if
 
 [GET] http://schoolschedules.dev:8080/app_dev.php/available-teachers?job_uuid=a2134581-0573-4e8a-bfa2-f31679dbde60
 
+### Notes about endpoint usage
+These endpoints aren't very robust, so errors caused by things like lack of validation or uncaught exceptions might happen. Please see the notes comments section below to read more about this.
 
-## Tests
+# Tests
 To run the unit tests, simply run:
 ```
 php phpunit.phar
 ```
-## Notes / Assumptions
+
+# Comments / Assumptions
 
 A few notes about the decisions made while developing this application:
 
-- There are many things that are not set up / implemented in this application, such as validation, error and exception handling, database constraints, etc. The objective was to create a simple but usable application based on the problem description, within the short-ish timeframe given.
+- There are many things that are not set up / implemented in this application, such as validation, error and exception handling, database constraints, etc. Symfony is a very rich framework and the objective was to create a simple but usable application based on the problem description, within the short-ish timeframe given.
 
-- The data model for the availabilities/unavailabilities and the logic that handles them to find teacher availability for a job is very naive. I thought it would be a better idea to get a basic but working version of the application (and possibly discuss enhancements in a future interview) than offering a sophisticated but non-finished, unusable version of the application.
+- The data model for the availabilities/unavailabilities and the logic that handles them to find teacher's availability for the jobs is a very first approach. I thought it would be a better idea to get a simple but working version of the application (and possibly discuss enhancements in a future interview) than offering a sophisticated but non-finished, unusable version of the application.
 
 Also, a few assumptions were made to limit the problem scope, specially around possible edge cases:
 
