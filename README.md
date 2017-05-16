@@ -8,7 +8,7 @@ Enjoy!
 # Requirements
 
 1. Docker
-2. PHP 7.0+ (if want to run the tests)
+2. PHP 7.0+ (if want to run the tests locally)
 
 # Installation
 
@@ -17,7 +17,7 @@ Once you have downloaded the repo, you can run the docker environment using [doc
 $ docker-compose up -d
 ```
 
-You can now install the project dependencies by running [composer](https://getcomposer.org/) (which is already downloaded in the php docker container):
+You can now install the project dependencies by running [composer](https://getcomposer.org/) (which is already downloaded in the php docker container). Accept the suggested parameters when creating the `parameters.yml` file.
 ```
 $ docker-compose run php composer install
 ```
