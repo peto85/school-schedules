@@ -1,14 +1,10 @@
-<?
+<?php
 
-namespace AppBundle\Utils;
+namespace AppBundle\Util;
 
 use Carbon\Carbon;
 
 class DateHelper {
-
-  public function __construct() {
-
-  }
 
   // Checks if date1 overlaps with date2
   public function checkDateOverlap($d1Start, $d1End, $d2Start, $d2End) {
